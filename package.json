@@ -1,0 +1,16 @@
+{
+  "name": "game-controller",
+  "version": "0.1.0",
+  "description": "Game Controller Microservice",
+  "main": "index.js",
+  "repository": "git@github.com:stackroute/quizztack-game-controller.git",
+  "author": "Sagar Patke <sagarpatke@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node game-controller.js"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "redis": "^2.6.3"
+  }
+}

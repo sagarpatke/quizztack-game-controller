@@ -1,4 +1,5 @@
 const client = require('./getRedisClient');
+const async = require('async');
 
 module.exports = function(gameId, callback) {
   async.parallel([
@@ -8,6 +9,7 @@ module.exports = function(gameId, callback) {
     getCue.bind(null, gameId)
   ], (err, results) => {
     if(err) { callback(err); return }
+    console.log('questions---------------------:' + results[0]);
     const state = {
       questions: results[0],
       scores: results[1],
@@ -23,15 +25,15 @@ function getQuestions(gameId, callback) {
   client.get(gameId+'_questions', (err, reply) => {
     if(err) { callback(err); return; }
 
-    const questions = JSON.parse(reply);
+    const questions = (reply ? JSON.parse(reply) : null);
 
-    const questions2d = [[],[],[],[],[]];
+    // const questions2d = [[],[],[],[],[]];
 
-    questions.forEach((item, index) => {
+    /*questions.forEach((item, index) => {
       questions2d[index / 6].push(item);
-    });
+    });*/
 
-    callback(null, questions2d);
+    callback(null, questions);
   });
 }
 

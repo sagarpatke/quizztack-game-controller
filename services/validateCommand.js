@@ -3,13 +3,16 @@ module.exports = function(state, {cmd, player}) {
     case 'sendState':
       return true;
     // TODO: player picks question
-    case 'playerPicksQuestion':
-      return playerPicksQuestion(state, player);
+    case 'pickQuestion':
+      return pickQuestion(state, player);
   }
 };
 
-function playerPicksQuestion(state, player) {
+function pickQuestion(state, player) {
+  console.log('state:', state);
+  console.log('player:', player);
+  console.log('!state.currQuestion:', !state.currQuestion && state.cue === player);
   return (
-    state.currQuestion === 'false' && state.cue === player
+    !state.currQuestion && state.cue === player
   );
 }

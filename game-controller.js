@@ -1,4 +1,5 @@
 const client = require('./services/getRedisClient');
+const async = require('async');
 
 const retrieveState = require('./services/retrieveState');
 const validateCommand = require('./services/validateCommand');
@@ -9,24 +10,24 @@ const saveState = require('./services/saveState');
 getMessage();
 
 function getMessage() {
+  console.log('Waiting for Message');
   client.brpop('gameMgrWorkQueue', 0, (err, msgString) => {
+    console.log('Received Message:', msgString[1]);
     const msg = JSON.parse(msgString[1]);
     processMessage(msg, (err) => {
-      if(err) { console.log('ERR:', err); }
-      getMessage();
+      if(err) { handleError(err); }
+      setTimeout(getMessage);
     });
   });
 }
 
-function processMessage(msg) {
+function processMessage(msg, callback) {
+  console.log('Processing Message:', msg);
   async.waterfall([
-    // TODO: Retrieve State
     retrieveState.bind(null, msg.gameId),
-    // TODO: Validate command
-    (state, callback) => {
-      if(err) { handleError(err); return; }
-      if(!validateCommand(state, msg)) { callback(new Error('Validation Failed')); return; }
-      callback(null, state);
+    (state, callback1) => {
+      if(!validateCommand(state, msg)) { callback1(new Error('Validation Failed')); return; }
+      callback1(null, state);
     },
     // TODO: Update Data
     updateData.bind(null, msg),
@@ -36,6 +37,7 @@ function processMessage(msg) {
     saveState.bind(null, msg.gameId),
   ], (err, results) => {
     if(err) { handleError(err); return; }
+    callback(null);
   });
 }
 

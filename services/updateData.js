@@ -6,10 +6,10 @@
 module.exports = function({player, cmd, args}, state, callback) {
   switch(cmd) {
     case 'sendState':
-      callback(null, state, state);
+      callback(null, state);
       return;
-    case 'playerPicksQuestion':
-      playerPicksQuestion(args, state, callback);
+    case 'pickQuestion':
+      pickQuestion(args, state, callback);
       return;
     case 'playerHitsBuzzer':
       playerHitsBuzzer(args, state, callback);
@@ -19,9 +19,9 @@ module.exports = function({player, cmd, args}, state, callback) {
   }
 };
 
-function playerPicksQuestion(args, state, callback) {
+function pickQuestion({row, col}, state, callback) {
   // TODO: Mark Picked Question as opened
-  const question = state.questions[args.row, args.col];
+  const question = state.questions[col][row];
   question.opened = true;
 
   // TODO: Clear Cue
@@ -30,15 +30,12 @@ function playerPicksQuestion(args, state, callback) {
   // TODO: Set Current Question
   state.currQuestion = question;
 
+  state.row = row;
+
+  state.col = col;
+
   // TODO: Send playerPicksQuestion to client
-  callback(null, state, {
-    cmd: 'pickQuestion',
-    args: {
-      row: args.row,
-      col: args.col,
-      cue: state.cue
-    }
-  });
+  callback(null, state);
 }
 
 function playerHitsBuzzer(args, state, callback) {

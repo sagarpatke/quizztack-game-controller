@@ -1,7 +1,7 @@
 const client = require('./getRedisClient');
 
-module.exports = function(gameId, state, msg, callback) {
-  client.publish(gameId+'_broadcast', msg, (err) => {
+module.exports = function(gameId, state, callback) {
+  client.publish(gameId+'_broadcast', JSON.stringify(state), (err) => {
     if(err) { callback(err); return; }
     callback(null, state);
   });

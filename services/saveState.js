@@ -2,9 +2,10 @@ const client = require('./getRedisClient');
 const async = require('async');
 
 module.exports = function(gameId, state, callback) {
+  console.log('Saving State:', state);
   async.parallel([
-    saveQuestions.bind(null, gameId, state.question),
-    saveScore.bind(null, gameId, state.scores),
+    saveQuestions.bind(null, gameId, state.questions),
+    saveScores.bind(null, gameId, state.scores),
     saveCurrQuestion.bind(null, gameId, state.currQuestion),
     saveCue.bind(null, gameId, state.cue)
   ], callback);

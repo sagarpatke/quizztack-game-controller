@@ -23,6 +23,11 @@ function pickQuestion({row, col}, state, callback) {
   // TODO: Mark Picked Question as opened
   const question = state.questions[col][row];
   question.opened = true;
+  // if(question.opened){
+  //   console.log(state.countQues);
+  //   state.countQues = state.countQues + 1;
+  // }
+
 
   // TODO: Clear Cue
   state.cue = false;
@@ -56,6 +61,7 @@ function playerAnswersQuestion(args, state, callback) {
     //Check Answer is Correct or wrong
     // TODO: Update Score
     if(state.currQuestion.subject === args) {
+      state.answeredCorrect = true;
       console.log('True Answer');
       state.scores.forEach(function(playerInfo) {
             if(playerInfo.player === state.cue) {
@@ -66,6 +72,7 @@ function playerAnswersQuestion(args, state, callback) {
     }
     //Set Cue to another player is answer is wrong
     else {
+        state.answeredCorrect = false;
         for(let i = 0 ; i < state.scores.length; i = i + 1) {
           console.log('Wrong Answer');
           console.log("Cue", state.cue);

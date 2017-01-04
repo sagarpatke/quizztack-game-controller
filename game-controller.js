@@ -42,5 +42,6 @@ function processMessage(msg, callback) {
 }
 
 function handleError(err) {
+  getMessage();
   console.error('ERR:',err);
 }

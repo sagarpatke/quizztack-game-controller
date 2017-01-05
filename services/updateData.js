@@ -69,9 +69,14 @@ function playerAnswersQuestion(args, state, callback) {
       state.scores.forEach(function(playerInfo) {
             if(playerInfo.player === state.cue) {
               playerInfo.score = playerInfo.score + ((state.currQuestion.row + 1)*200);
+              state.currQuestion = false;
             }
       })
-
+      state.completed = state.questions.every( (col)=> {
+        return col.every((question) => {
+            return question.opened
+        })
+      })
     }
     //Set Cue to another player is answer is wrong
     else {
@@ -88,6 +93,5 @@ function playerAnswersQuestion(args, state, callback) {
     }
   // TODO: Cue
   // TODO: currQues
-      state.currQuestion = false;
       callback(null, state);
 }

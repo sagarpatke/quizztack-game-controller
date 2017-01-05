@@ -47,7 +47,10 @@ function playerHitsBuzzer(player, state, callback) {
   // TODO: Update Cue
       state.cue = player;
   // TODO: Send Options
-      state.currQuestion.options = state.currQuestion.options.concat(state.currQuestion.subject);
+      var index = Math.floor(Math.random() * 4 + 1);
+      console.log(index);
+      state.currQuestion.options.splice(index, 0, state.currQuestion.subject);
+      // state.currQuestion.options = state.currQuestion.options.concat(state.currQuestion.subject);
       console.log(state);
       callback(null, state);
 }
